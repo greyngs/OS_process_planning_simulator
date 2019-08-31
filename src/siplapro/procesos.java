@@ -5,17 +5,20 @@ package siplapro;
  * @author reyes
  */
 public class procesos {
-    public String Name;
-    public int Tlleg, Cpu1, Es, Cpu2;
+    public String Name, pCola;
+    public int Tlleg, Cpu1, Es, Cpu2, pEs;
     public float Tfinal, Tser, Tesp, IndSer;
     public boolean bloc;
+    
 	
     procesos(String name,int tlleg,int cpu1,int es, int cpu2){
         Name = name;
 	Tlleg = tlleg;
 	Cpu1 = cpu1;
 	Es = es;
+        pEs = 0;
 	Cpu2 = cpu2;
+        pCola = null;
 	Tfinal = -1;
 	Tser = -1;
         Tesp = -1;
@@ -28,6 +31,14 @@ public class procesos {
     
     public void setName(String name){
         Name = name;
+    }
+    
+    public String getpCola(){
+        return pCola;
+    }
+    
+    public void setpCola(String cola){
+        pCola = cola;
     }
     
     public int getTlleg(){
@@ -52,6 +63,14 @@ public class procesos {
 
     public void setEs(int es){
     	Es = es;
+    }
+    
+    public int getpEs(){
+        return pEs;
+    }
+
+    public void setpEs(int pes){
+    	pEs = pes;
     }
     
     public int getCpu2(){
