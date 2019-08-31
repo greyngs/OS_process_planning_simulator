@@ -28,17 +28,23 @@ public class run {
         this.quantum = quantum;
         q = quantum;
         this.iProcesos = iProcesos;
-        while(unfin()){                         //unfin sera false cuando las cpu y e/s de todos los procesos sean 0
+        while(unfin() && Time<14){                         //unfin sera false cuando las cpu y e/s de todos los procesos sean 0
+            System.out.println("------------------------------------------------");
             System.out.println("Tiempo: " + Time);
             pLlegada();                                 //Esta funcion encola los procesos que van llegando a cola1
             runES();                                //Esta funcion resta las e/s si el proceso ya ejecuto la cpu1
             pLlegadaCola2();                        //Esta funcion encola los procesos que acaben cpu1 y e/s en la cola2
             if (!cola1.isEmpty()) {                 //La cola1 tiene mayor prioridad por tanto se ejecuta primero si tiene algun proceso
+                System.out.println("RR");
                 rr();
-            }else if(!cola2.isEmpty()){             //Si la cola1 no tiene procesos y la cola2 si, cola2 ejecuta sus procesos.
-                
+            }else if(!cola2.isEmpty()){             //Si la cola1 no tiene procesos y la cola2 si, cola2 ejecuta sus procesos. 
+                System.out.println("FIFO");
                 fifo();
+                
             }
+            System.out.println("Cola2: ");
+            showProCola(cola2);
+            System.out.println("----------------------------------------------");
             Time++;                             // En cada iteracion de while el tiempo aumenta
         }
         System.out.println("Termino");
@@ -51,7 +57,12 @@ public class run {
             iProcesos[proCola(iProcesos, cola1.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola1.peek().Name)].Cpu1 - 1);
             System.out.println(cola1.peek().Name + ". cpu1: " + cola1.peek().Cpu1);
             q--;
-            if(cola1.peek().Cpu1 == 0){
+            if(q==0 && cola1.peek().Cpu1 != 0){
+                cola2.add(cola1.peek());
+                cola1.remove();
+                q = quantum;
+            }else if(q==0 && cola1.peek().Cpu1 == 0){
+                //cola2.add(cola1.peek());
                 cola1.remove();
                 q = quantum;
             }
@@ -59,50 +70,30 @@ public class run {
             iProcesos[proCola(iProcesos, cola1.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola1.peek().Name)].Cpu2 - 1);
             System.out.println(cola1.peek().Name + ". cpu2: " + cola1.peek().Cpu2);
             q--;
-            if(cola1.peek().Cpu2 == 0){
+            if(q==0){
+                cola2.add(cola1.peek());
                 cola1.remove();
                 q = quantum;
             }
-        }else if(q==0){
-            cola2.add(cola1.peek());
-            cola1.remove();
-            q = quantum;
-            if (!cola1.isEmpty() && cola1.peek().Cpu1 != 0) {
-                iProcesos[proCola(iProcesos, cola1.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola1.peek().Name)].Cpu1 - 1);
-                System.out.println(cola1.peek().Name + ". cpu1: " + cola1.peek().Cpu1);
-                q--;
-                if(cola1.peek().Cpu1 == 0){
-                    cola1.remove();
-                    q = quantum;
-                }
-            }else if (!cola1.isEmpty() && cola1.peek().Cpu1 == 0 && cola1.peek().Cpu2 != 0) {
-                iProcesos[proCola(iProcesos, cola1.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola1.peek().Name)].Cpu2 - 1);
-                System.out.println(cola1.peek().Name + ". cpu2: " + cola1.peek().Cpu2);
-                q--;
-                if(cola1.peek().Cpu2 == 0){
-                    cola1.remove();
-                    q = quantum;
-                }
-            }else if(cola1.isEmpty() && !cola2.isEmpty()){
-                showProCola(cola2);
+            if(cola1.peek().Cpu2 == 0){
+                cola1.remove();
+                q = quantum;
             }
         }
     }
     
     public void fifo(){
-        System.out.println("Cola2: ");
-        System.out.println(cola2);
         if( cola2.peek().Cpu1 != 0){
             iProcesos[proCola(iProcesos, cola2.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola2.peek().Name)].Cpu1 - 1);
-            System.out.println("Cola1: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu1);
+            System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu1);
             q--;
             if(cola2.peek().Cpu1 == 0){
                 cola2.remove();
                 q = quantum;
             }
         }else if(cola2.peek().Cpu1 == 0 && cola2.peek().Cpu2 != 0){
-            iProcesos[proCola(iProcesos, cola2.peek().Name)].setCpu1(iProcesos[proCola(iProcesos, cola2.peek().Name)].Cpu2 - 1);
-            System.out.println("Cola1: " + cola1.peek().Name + ". cpu: " + cola2.peek().Cpu2);
+            iProcesos[proCola(iProcesos, cola2.peek().Name)].setCpu2(iProcesos[proCola(iProcesos, cola2.peek().Name)].Cpu2 - 1);
+            System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu2);
             q--;
             if(cola2.peek().Cpu2 == 0){
                 cola2.remove();
@@ -113,6 +104,22 @@ public class run {
     
     
     //Funciones auxiliares ------------------------------------------------------
+    
+    public boolean encoladois(Queue cola, procesos proceso){
+        int count =0;
+        for (int i = 0; i < cola.size(); i++) {
+            if (cola.peek().equals(proceso)) {
+                count++;
+            }
+            cola.add(cola.peek());
+            cola.remove();
+        }
+        if (count>0) {
+            return true;
+        }else{
+            return false;
+        }    
+    }
     
     public void showProCola(Queue cola){
         for (int i = 0; i < cola.size(); i++) {
@@ -128,7 +135,7 @@ public class run {
     
     public void pLlegadaCola2(){
         for (int i = 0; i < iProcesos.length; i++) {
-            if(iProcesos[i].Cpu1 == 0 && iProcesos[i].Es == 0){
+            if(iProcesos[i].Cpu1 == 0 && iProcesos[i].Es == 0 && !encoladois(cola2, iProcesos[i])){
                 cola2.add(iProcesos[i]);
             }
         }
