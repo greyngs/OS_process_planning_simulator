@@ -68,11 +68,7 @@ public class run {
                 cola2.add(cola1.peek());
                 cola1.remove();
                 q = quantum;
-            }else if(q==0 && cola1.peek().Cpu1 == 0){
-                //cola2.add(cola1.peek());
-                cola1.remove();
-                q = quantum;
-            }else if(cola1.peek().Cpu1 == 0){
+            }else if(q==0 || cola1.peek().Cpu1 == 0){
                 cola1.remove();
                 q = quantum;
             }
@@ -81,8 +77,11 @@ public class run {
             iProcesos[proCola(iProcesos, cola1.peek().Name)].setpCola("Cola1");
             System.out.println(cola1.peek().Name + ". cpu2: " + cola1.peek().Cpu2);
             q--;
-            if(q==0 || cola1.peek().Cpu2 == 0){
-                //cola2.add(cola1.peek());
+            if(q==0 && cola1.peek().Cpu2 != 0){
+                cola2.add(cola1.peek());
+                cola1.remove();
+                q = quantum;
+            }else if(q==0 || cola1.peek().Cpu2 == 0){
                 cola1.remove();
                 q = quantum;
             }
