@@ -6,8 +6,8 @@ package siplapro;
  */
 public class procesos {
     public String Name, pCola;
-    public int Tlleg, Cpu1, Es, Cpu2, pEs;
-    public float Tfinal, Tser, Tesp, IndSer;
+    public int Tlleg, Cpu1, Es, Cpu2, pEs, Tfinal;
+    public float Tser, Tesp, IndSer;
     public boolean bloc;
     
 	
@@ -81,11 +81,11 @@ public class procesos {
         Cpu2 = cpu2;
     }
     
-    public float getTfinal(){
+    public int getTfinal(){
 	return Tfinal;
     }
 
-    public void setTfinal(float tfinal){
+    public void setTfinal(int tfinal){
         Tfinal = tfinal;
     }
     

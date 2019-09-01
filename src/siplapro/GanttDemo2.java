@@ -1,48 +1,11 @@
 package siplapro;
-/* ===========================================================
- * JFreeChart : a free chart library for the Java(tm) platform
- * ===========================================================
- *
- * (C) Copyright 2000-2004, by Object Refinery Limited and Contributors.
- *
- * Project Info:  http://www.jfree.org/jfreechart/index.html
- *
- * This library is free software; you can redistribute it and/or modify it under the terms
- * of the GNU Lesser General Public License as published by the Free Software Foundation;
- * either version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
- *
- * [Java is a trademark or registered trademark of Sun Microsystems, Inc. 
- * in the United States and other countries.]
- *
- * ---------------
- * GanttDemo2.java
- * ---------------
- * (C) Copyright 2003, 2004, by Object Refinery Limited.
- *
- * Original Author:  David Gilbert (for Object Refinery Limited);
- * Contributor(s):   -;
- *
- * $Id: GanttDemo2.java,v 1.12 2004/04/26 19:11:54 taqua Exp $
- *
- * Changes
- * -------
- * 10-Jan-2003 : Version 1 (based on GanttDemo1) (DG);
- * 16-Sep-2003 : Transferred dataset creation from DemoDatasetFactory to this class (DG);
- *
- */
 
 import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -65,23 +28,30 @@ import org.jfree.ui.RefineryUtilities;
  *
  */
 public class GanttDemo2 extends ApplicationFrame {
-
+    
+    List<Integer> historial = new ArrayList<Integer>();
+    
     /**
      * Creates a new demo.
      *
      * @param title  the frame title.
      */
     public GanttDemo2(final String title) {
-
+        
         super(title);
-
+        
+        for (int i = 0; i < 20; i++) {
+            
+           // historial[i]=1;
+        }
+        
         final IntervalCategoryDataset dataset = createSampleDataset();
 
         // create the chart...
         final JFreeChart chart = ChartFactory.createGanttChart(
-            "Gantt Chart Demo",  // chart title
-            "Task",              // domain axis label
-            "Date",              // range axis label
+            "Gantt Chart",  // chart title
+            "Procesos",              // domain axis label
+            "Time",              // range axis label
             dataset,             // data
             true,                // include legend
             true,                // tooltips
@@ -89,8 +59,8 @@ public class GanttDemo2 extends ApplicationFrame {
         );
         final CategoryPlot plot = (CategoryPlot) chart.getPlot();
 
-        final BarRenderer renderer = (BarRenderer)plot.getRenderer();
-        renderer.setSeriesPaint(0, Color.red);
+        BarRenderer renderer = (BarRenderer)plot.getRenderer();
+        renderer.setSeriesPaint(0, Color.blue);
         renderer.setMaximumBarWidth(0.10);
         
         DateAxis axis = (DateAxis) plot.getRangeAxis();
@@ -98,7 +68,7 @@ public class GanttDemo2 extends ApplicationFrame {
         
         // add the chart to a panel...
         final ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(1000, 1000));
+        chartPanel.setPreferredSize(new java.awt.Dimension(1200, 720));
         setContentPane(chartPanel);
 
     }
@@ -122,15 +92,18 @@ public class GanttDemo2 extends ApplicationFrame {
      */
     private IntervalCategoryDataset createSampleDataset() {
 
-        final TaskSeries s1 = new TaskSeries("Scheduled");
+        final TaskSeries s1 = new TaskSeries("Proceso 1");
+        //final TaskSeries s2 = new TaskSeries("Proceso 2");
         
-        final Task t1 =new Task("Proceso1",  new SimpleTimePeriod(0, 20));
-        final Task t2 =new Task("Proceso1",  new SimpleTimePeriod(0, 20));
+        final Task t1 =new Task("Proceso1",  new SimpleTimePeriod(50, 100));
+        final Task t2 =new Task("Proceso1",  new SimpleTimePeriod(25, 30));
         s1.add(t1);
+        
         
 
         final TaskSeriesCollection collection = new TaskSeriesCollection();
         collection.add(s1);
+       // collection.add(s2);
 
         return collection;
     }
@@ -143,7 +116,7 @@ public class GanttDemo2 extends ApplicationFrame {
      */
     public static void main(final String[] args) {
 
-        final GanttDemo2 demo = new GanttDemo2("Gantt Chart Demo 2");
+        final GanttDemo2 demo = new GanttDemo2("Gantt Chart");
         demo.pack();
         RefineryUtilities.centerFrameOnScreen(demo);
         demo.setVisible(true);
