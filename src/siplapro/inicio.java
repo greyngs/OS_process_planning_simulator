@@ -296,7 +296,7 @@ public class inicio extends javax.swing.JFrame {
                             Integer.parseInt(modelo.getValueAt(i, 2).toString()), Integer.parseInt(modelo.getValueAt(i, 3).toString()), 
                             Integer.parseInt(modelo.getValueAt(i, 4).toString()));
                 }
-                Runner.planner(iProcesos, oProcesos, Integer.parseInt(txtQuan.getText()));
+                Runner.planner(iProcesos, oProcesos, Integer.parseInt(txtQuan.getText()), comboCola2.getSelectedItem().toString());
                 this.setVisible(false);
             }
         }else{
@@ -308,7 +308,7 @@ public class inicio extends javax.swing.JFrame {
     private void btnRandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRandActionPerformed
         Random rnd = new Random();
         Object o[]=null;
-       /* modelo.addRow(o);
+      /*  modelo.addRow(o);
         modelo.setValueAt("P0", 0, 0);
             modelo.setValueAt(0, 0, 1);
             modelo.setValueAt(3, 0, 2);
