@@ -131,16 +131,15 @@ public class run {
     }
     
     public void sjn(){
-        int icpu1 = 999999;
-        int icpu2 = 999999;
+        int icpu1 = 999;
+        int icpu2 = 999;
         int count1 = 0; 
         int count2 = 0;
         for (int i = 0; i < cola2.size(); i++) {
             if (cola2.peek().Cpu1 > 0) {
                 if (icpu1 > cola2.peek().Cpu1) {
                     icpu1 = cola2.peek().Cpu1;
-                    count1 = i;
-                    
+                    count1 = i;     
                 }
             }
             cola2.add(cola2.peek());
@@ -165,16 +164,22 @@ public class run {
         
         if (icpu1 == icpu2) {
             if (count1 < count2) {
+                System.out.println("El proceso que pondra de primero es11111: " + count1);
                 reparar(count1);
             }else{
+                System.out.println("El proceso que pondra de primero es22222: " + count2);
                 reparar(count2);
             }
         }else if (icpu1 < icpu2) {
+            System.out.println("El proceso que pondra de primero es333333: " + count1);
             reparar(count1);
         }else if(icpu1 > icpu2){
+            System.out.println("El proceso que pondra de primero es444444: " + count2);
             reparar(count2);
         }
         System.out.println("El menor proceso es: " + cola2.peek().Name);
+        System.out.println("Estado Cola despues de reparar: ");
+        showProCola(cola2);
     }
     
     
@@ -232,33 +237,72 @@ public class run {
         System.out.println("El mayor HRN proceso es: " + cola2.peek().Name);
     }
     
-    Queue <procesos> cola3 = new LinkedList<>();  
-    Queue <procesos> cola4 = new LinkedList<>();
     //Funciones auxiliares ------------------------------------------------------
-    //Queue <procesos> cola1 = new LinkedList<>();
+    
+
     public void reparar(int count){
-        if (count > 0) {
-            for (int i = 0; i < count; i++) { //  2
+        System.out.println("Inicio reparacion!!!!!!");
+        
+        System.out.println("El indice es: "+ count);
+        Queue <procesos> cola3 = new LinkedList<>();  
+        Queue <procesos> cola4 = new LinkedList<>();
+        for (int i = 0; i < count; i++) { //  2
+        cola3.add(cola2.peek());
+        cola2.remove();
+        }
+        
+        System.out.println("......................................1");
+        System.out.println("Estado Cola2: ");
+        showProCola(cola2);
+        System.out.println("Estado Cola3: ");
+        showProCola(cola3);
+        System.out.println("Estado Cola4: ");
+        showProCola(cola4);
+        cola4.add(cola2.peek()); // 3
+        cola2.remove();
+
+        
+        System.out.println("......................................2");
+        System.out.println("Estado Cola2: ");
+        showProCola(cola2);
+        System.out.println("Estado Cola3: ");
+        showProCola(cola3);
+        System.out.println("Estado Cola4: ");
+        showProCola(cola4);
+        
+        System.out.println("cola2.size: " + cola2.size());
+        int jaja = cola2.size();
+        for (int i = 0; i < jaja; i++) { //  4
             cola3.add(cola2.peek());
             cola2.remove();
-            }
-
-            cola4.add(cola2.peek()); // 3
-            cola2.remove();
-
-            for (int i = 0; i < cola2.size(); i++) { //  4
-                cola3.add(cola2.peek());
-                cola2.remove();
-            }
-
-            cola2.add(cola4.peek()); //  5
-            cola4.remove();
-
-            for (int i = 0; i < cola3.size(); i++) { //  6
-                cola2.add(cola3.peek());
-                cola3.remove();
-            }
         }
+
+        
+        System.out.println("......................................3");
+        System.out.println("Estado Cola2: ");
+        showProCola(cola2);
+        System.out.println("Estado Cola3: ");
+        showProCola(cola3);
+        System.out.println("Estado Cola4: ");
+        showProCola(cola4);
+        
+        cola2.add(cola4.peek()); //  5
+        cola4.remove();
+
+        
+        System.out.println("......................................4");
+        System.out.println("Estado Cola2: ");
+        showProCola(cola2);
+        System.out.println("Estado Cola3: ");
+        showProCola(cola3);
+        System.out.println("Estado Cola4: ");
+        showProCola(cola4);
+        int jajaja = cola3.size();
+        for (int i = 0; i < jajaja; i++) { //  6
+            cola2.add(cola3.peek());
+            cola3.remove();
+        }
+        
     }
     
     public void showCola(Queue <procesos> cola){
