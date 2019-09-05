@@ -7,6 +7,7 @@ package siplapro;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -14,8 +15,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class tabulado extends javax.swing.JFrame {
     
+    procesos[] iProcesos;
+    int Time;
+    String[] historial0 = new String[200];
     
-    public void cargarProcesos(procesos[] aProcesos){
+    public void cargarProcesos(procesos[] aProcesos, String[] historial, int time){
         for (int i = 0; i < aProcesos.length; i++) {
             try{
                 Object o[]=null;
@@ -46,6 +50,14 @@ public class tabulado extends javax.swing.JFrame {
         TMS.setText(Float.toString((float)iTMS/aProcesos.length));
         TME.setText(Float.toString((float)iTME/aProcesos.length));
         IS.setText(Float.toString((float)iIS/aProcesos.length));
+        
+        iProcesos = aProcesos;
+        
+        Time = time;
+        
+        for (int i = 0; i < time; i++) {
+            historial0[i] = historial[i];
+        }
     }
     
 
@@ -81,10 +93,14 @@ public class tabulado extends javax.swing.JFrame {
         TMS = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
         btnGantt = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         jLabel1.setText("Tabulado");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(529, 29, -1, -1));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,11 +115,19 @@ public class tabulado extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tabla);
 
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 1020, 336));
+
         jLabel2.setText("Tiempo medio de servicio: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(55, 432, -1, -1));
 
         jLabel3.setText("Tiempo medio de espera:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(434, 432, -1, -1));
 
         jLabel4.setText("Indice de servicio:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(807, 432, -1, -1));
+        getContentPane().add(TME, new org.netbeans.lib.awtextra.AbsoluteConstraints(619, 432, 74, 16));
+        getContentPane().add(IS, new org.netbeans.lib.awtextra.AbsoluteConstraints(948, 432, 78, 16));
+        getContentPane().add(TMS, new org.netbeans.lib.awtextra.AbsoluteConstraints(243, 432, 67, 16));
 
         btnBack.setText("Volver");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -111,64 +135,18 @@ public class tabulado extends javax.swing.JFrame {
                 btnBackActionPerformed(evt);
             }
         });
+        getContentPane().add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(268, 509, 88, -1));
 
         btnGantt.setText("Gantt ");
+        btnGantt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGanttActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnGantt, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 509, 80, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel2)
-                                .addGap(32, 32, 32)
-                                .addComponent(TMS, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(124, 124, 124)
-                                .addComponent(jLabel3)
-                                .addGap(37, 37, 37)
-                                .addComponent(TME, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(114, 114, 114)
-                                .addComponent(jLabel4)
-                                .addGap(37, 37, 37)
-                                .addComponent(IS, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1032, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(529, 529, 529)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(268, 268, 268)
-                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(319, 319, 319)
-                        .addComponent(btnGantt, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(81, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TMS, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel4)
-                        .addComponent(TME, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(IS, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(61, 61, 61)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBack)
-                    .addComponent(btnGantt))
-                .addContainerGap(178, Short.MAX_VALUE))
-        );
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/siplapro/red.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1140, 660));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -178,6 +156,13 @@ public class tabulado extends javax.swing.JFrame {
         win.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void btnGanttActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGanttActionPerformed
+        ganttChart demo = new ganttChart("Diagrama de gantt", historial0, Time, iProcesos);
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
+    }//GEN-LAST:event_btnGanttActionPerformed
 
     /**
      * @param args the command line arguments
@@ -263,6 +248,7 @@ public class tabulado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables

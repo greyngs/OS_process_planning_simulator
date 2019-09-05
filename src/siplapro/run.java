@@ -17,12 +17,16 @@ import java.util.List;
  */
 public class run {
     int Time = 0;
+    int maxHist = 0;
+    
     Queue <procesos> cola1 = new LinkedList<>();
     Queue <procesos> cola2 = new LinkedList<>();
-    //List historial = new ArrayList();
+    String historial0[] = new String[200];
+
     int quantum=0;
     int q=0;
     int senalRepar = 1;
+    
     procesos[] iProcesos;
     procesos[] oProcesos;
     
@@ -31,6 +35,11 @@ public class run {
         q = quantum;
         iProcesos = Procesos;
         oProcesos = pro;
+        maxiHist();
+        
+        for (int i = 0; i < historial0.length; i++) {
+            historial0[i] = "*";
+        }
         while(unfin() && Time<100){                         //unfin sera false cuando las cpu y e/s de todos los procesos sean 0
             System.out.println("------------------------------------------------");
             System.out.println("Tiempo: " + Time);
@@ -69,7 +78,12 @@ public class run {
         for (int i = 0; i < iProcesos.length; i++) {
             System.out.println("El proceso " + oProcesos[i].Name + ", termino en: " + oProcesos[i].Tfinal);
         }
-        tabular();
+        String historial[] = new String[Time];
+        for (int i = 0; i < Time; i++) {
+            historial[i] = historial0[i];
+        }
+
+        tabular(historial);
         System.out.println("Termino");
     }
     
@@ -79,6 +93,7 @@ public class run {
             iProcesos[proCola(cola1.peek().Name)].setCpu1(iProcesos[proCola(cola1.peek().Name)].Cpu1 - 1);
             iProcesos[proCola(cola1.peek().Name)].setpCola("Cola1");
             System.out.println("Cola1: " + cola1.peek().Name + ". cpu1: " + cola1.peek().Cpu1);
+            historial0[Time] = cola1.peek().Name;
             q--;
             if(q==0 && cola1.peek().Cpu1 > 0){
                 cola2.add(cola1.peek());
@@ -92,6 +107,7 @@ public class run {
             iProcesos[proCola(cola1.peek().Name)].setCpu2(iProcesos[proCola(cola1.peek().Name)].Cpu2 - 1);
             iProcesos[proCola(cola1.peek().Name)].setpCola("Cola1");
             System.out.println("Cola1: " + cola1.peek().Name + ". cpu2: " + cola1.peek().Cpu2);
+            historial0[Time] = cola1.peek().Name;
             q--;
             if(q==0 && cola1.peek().Cpu2 > 0){
                 cola2.add(cola1.peek());
@@ -109,6 +125,7 @@ public class run {
             iProcesos[proCola(cola2.peek().Name)].setCpu1(iProcesos[proCola(cola2.peek().Name)].Cpu1 - 1);
             iProcesos[proCola(cola2.peek().Name)].setpCola("Cola2");
             System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu1);
+            historial0[Time] = cola2.peek().Name;
             q--;
             senalRepar = 0;
             if(cola2.peek().Cpu1 == 0){
@@ -120,6 +137,7 @@ public class run {
             iProcesos[proCola(cola2.peek().Name)].setCpu2(iProcesos[proCola(cola2.peek().Name)].Cpu2 - 1);
             iProcesos[proCola(cola2.peek().Name)].setpCola("Cola2");
             System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu2);
+            historial0[Time] = cola2.peek().Name;
             q--;
             senalRepar = 0;
             if(cola2.peek().Cpu2 == 0){
@@ -164,17 +182,17 @@ public class run {
         
         if (icpu1 == icpu2) {
             if (count1 < count2) {
-                System.out.println("El proceso que pondra de primero es11111: " + count1);
+                System.out.println("El proceso que pondra de primero es: " + count1);
                 reparar(count1);
             }else{
-                System.out.println("El proceso que pondra de primero es22222: " + count2);
+                System.out.println("El proceso que pondra de primero es: " + count2);
                 reparar(count2);
             }
         }else if (icpu1 < icpu2) {
-            System.out.println("El proceso que pondra de primero es333333: " + count1);
+            System.out.println("El proceso que pondra de primero es: " + count1);
             reparar(count1);
         }else if(icpu1 > icpu2){
-            System.out.println("El proceso que pondra de primero es444444: " + count2);
+            System.out.println("El proceso que pondra de primero es: " + count2);
             reparar(count2);
         }
         System.out.println("El menor proceso es: " + cola2.peek().Name);
@@ -237,8 +255,8 @@ public class run {
         System.out.println("El mayor HRN proceso es: " + cola2.peek().Name);
     }
     
-    //Funciones auxiliares ------------------------------------------------------
     
+    //Funciones auxiliares ------------------------------------------------------
 
     public void reparar(int count){
         System.out.println("Inicio reparacion!!!!!!");
@@ -305,6 +323,12 @@ public class run {
         
     }
     
+    public void maxiHist(){
+        for (int i = 0; i < oProcesos.length; i++) {
+            maxHist += oProcesos[i].Cpu1 + oProcesos[i].Cpu2 + oProcesos[i].Es;
+        }   
+    }
+    
     public void showCola(Queue <procesos> cola){
         for (int i = 0; i < cola.size(); i++) {
             System.out.println(cola.peek().Name);
@@ -313,10 +337,10 @@ public class run {
         }
     }
     
-    public void tabular(){
+    public void tabular(String[] historial1){
         tabulado win = new tabulado();
         win.setVisible(true);
-        win.cargarProcesos(oProcesos);
+        win.cargarProcesos(oProcesos, historial1, Time);
     }
     
     public void respuestas(){

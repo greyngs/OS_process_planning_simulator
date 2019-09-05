@@ -6,12 +6,11 @@ package siplapro;
  */
 public class procesos {
     public String Name, pCola;
-    public int Tlleg, Cpu1, Es, Cpu2, pEs, Tfinal;
+    public int Tlleg, Cpu1, Es, Cpu2, pEs, Tfinal, Num;
     public float Tser, Tesp, IndSer;
-    public boolean bloc;
     
 	
-    procesos(String name,int tlleg,int cpu1,int es, int cpu2){
+    procesos(String name, int tlleg,int cpu1,int es, int cpu2){
         Name = name;
 	Tlleg = tlleg;
 	Cpu1 = cpu1;
