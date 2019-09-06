@@ -1,5 +1,4 @@
 package siplapro;
-
 /**
  *
  * @author reyes
@@ -8,8 +7,7 @@ public class procesos {
     public String Name, pCola;
     public int Tlleg, Cpu1, Es, Cpu2, pEs, Tfinal, Num;
     public float Tser, Tesp, IndSer;
-    
-	
+    	
     procesos(String name, int tlleg,int cpu1,int es, int cpu2){
         Name = name;
 	Tlleg = tlleg;

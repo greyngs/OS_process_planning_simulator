@@ -1,20 +1,16 @@
 package siplapro;
-
+/**
+ *
+ * @author reyes
+ */
 import java.awt.Color;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-/**
- *
- * @author reyes
- */
 public class inicio extends javax.swing.JFrame {
 public static final Color BackColor = new Color(204,224,255);
-    /**
-     * Creates new form inicio
-     */
+
     public inicio() {
         initComponents();
         this.setBackground(BackColor);
@@ -156,7 +152,7 @@ public static final Color BackColor = new Color(204,224,255);
 
         jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 8)); // NOI18N
         jLabel14.setText("Reyngs");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 560, -1, -1));
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 570, -1, -1));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/siplapro/blue.png"))); // NOI18N
         getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 620));

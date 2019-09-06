@@ -1,5 +1,8 @@
 package siplapro;
-
+/**
+ *
+ * @author reyes
+ */
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,22 +27,12 @@ import org.jfree.data.time.SimpleTimePeriod;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-/**
- * A simple demonstration application showing how to create a Gantt chart with multiple bars per
- * task. 
- *
- */
 public class ganttChart extends ApplicationFrame {
     
     procesos[] Procesos;
     int Time;
     String[] Historial = new String[200];
-    
-    /**
-     * Creates a new demo.
-     *
-     * @param title  the frame title.
-     */
+
     public ganttChart(String title, String[] historial1, int Time1, procesos[] iProcesos) {
         
         super(title);
@@ -78,8 +71,6 @@ public class ganttChart extends ApplicationFrame {
     
     private IntervalCategoryDataset createSampleDataset() {
         
-        System.out.println(Procesos.length + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        
         final TaskSeries[] s = new TaskSeries[Procesos.length];
         final Task[] t = new Task[Procesos.length];
         
@@ -92,7 +83,7 @@ public class ganttChart extends ApplicationFrame {
         final Task[] st = new Task[Time];
         
         for (int i = 0; i < Procesos.length; i++) {
-            for (int j = 0; j < Time-1; j++) {
+            for (int j = 0; j < Time; j++) {
                 if (Procesos[i].Name.equals(Historial[j])) {
                     st[j] = new Task(Procesos[i].Name, new SimpleTimePeriod(j, j+1));
                     t[i].addSubtask(st[j]);

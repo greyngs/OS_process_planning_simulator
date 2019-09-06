@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package siplapro;
-
-
+/**
+ *
+ * @author reyes
+ */
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.List;
 
-/**
- *
- * @author reyes
- */
 public class run {
     int Time = 0;
+    int blockfifo = 1;
     int maxHist = 0;
     
     Queue <procesos> cola1 = new LinkedList<>();
@@ -47,7 +41,7 @@ public class run {
             encolarEs();                        //Esta funcion encola los procesos que acaben e/s en la cola que corresponda
             runES();                                //Esta funcion resta las e/s si el proceso ya ejecuto la cpu1
             
-            if (!cola1.isEmpty()) {                 //La cola1 tiene mayor prioridad por tanto se ejecuta primero si tiene algun proceso
+            if (!cola1.isEmpty() && blockfifo==1) {                 //La cola1 tiene mayor prioridad por tanto se ejecuta primero si tiene algun proceso
                 System.out.println("RR");
                 rr();
             }else if(!cola2.isEmpty()){             //Si la cola1 no tiene procesos y la cola2 si, cola2 ejecuta sus procesos. 
@@ -126,11 +120,13 @@ public class run {
             iProcesos[proCola(cola2.peek().Name)].setpCola("Cola2");
             System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu1);
             historial0[Time] = cola2.peek().Name;
+            blockfifo = 0;
             q--;
             senalRepar = 0;
             if(cola2.peek().Cpu1 == 0){
                 cola2.remove();
                 senalRepar = 1;
+                blockfifo = 1;
             }
             q = quantum;
         }else if(cola2.peek().Cpu1 == 0 && cola2.peek().Cpu2 != 0){
@@ -138,11 +134,13 @@ public class run {
             iProcesos[proCola(cola2.peek().Name)].setpCola("Cola2");
             System.out.println("Cola2: " + cola2.peek().Name + ". cpu: " + cola2.peek().Cpu2);
             historial0[Time] = cola2.peek().Name;
+            blockfifo = 0;
             q--;
             senalRepar = 0;
             if(cola2.peek().Cpu2 == 0){
                 cola2.remove();
                 senalRepar = 1;
+                blockfifo = 1;
             }
             q = quantum;
         }
@@ -199,9 +197,7 @@ public class run {
         System.out.println("Estado Cola despues de reparar: ");
         showProCola(cola2);
     }
-    
-    
-    
+
     public void hrn(){
         int div1 = cola2.size();
         int div2 = cola2.size();
@@ -254,7 +250,6 @@ public class run {
         }
         System.out.println("El mayor HRN proceso es: " + cola2.peek().Name);
     }
-    
     
     //Funciones auxiliares ------------------------------------------------------
 
